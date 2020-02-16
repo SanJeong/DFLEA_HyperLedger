@@ -1,0 +1,126 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+# NOTE: This is not the way a Kafka cluster would normally be deployed in production, as it is not secure
+# and is not fault tolerant. This example is a toy deployment that is only meant to exercise the Kafka code path
+# of the ordering service.
+
+version: '2'
+
+networks:
+  byfn:
+
+services:
+
+  zookeeper0:
+    extends:
+      file: base/docker-compose-base.yaml
+      service: zookeeper
+    container_name: zookeeper0
+    environment:
+      - ZOO_MY_ID=1
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+    networks:
+    - byfn
+
+  zookeeper1:
+    extends:
+      file: base/docker-compose-base.yaml
+      service: zookeeper
+    container_name: zookeeper1
+    environment:
+      - ZOO_MY_ID=2
+    ports:
+      - 12181:2181
+      - 12888:2888
+      - 13888:3888
+    networks:
+    - byfn
+
+  zookeeper2:
+    extends:
+      file: base/docker-compose-base.yaml
+      service: zookeeper
+    container_name: zookeeper2
+    environment:
+      - ZOO_MY_ID=3
+    ports:
+      - 22181:2181
+      - 22888:2888
+      - 23888:3888
+    networks:
+    - byfn
+
+  kafka0:
+    extends:
+      file: base/docker-compose-base.yaml
+      service: kafka
+    container_name: kafka0
+    environment:
+      - KAFKA_BROKER_ID=0
+    ports:
+      - 9092:9092
+      - 9093:9093
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+    networks:
+    - byfn
+
+  kafka1:
+    extends:
+      file: base/docker-compose-base.yaml
+      service: kafka
+    container_name: kafka1
+    environment:
+      - KAFKA_BROKER_ID=1
+    ports:
+      - 10092:9092
+      - 10093:9093
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+    networks:
+    - byfn
+
+  kafka2:
+    extends:
+      file: base/docker-compose-base.yaml
+      service: kafka
+    container_name: kafka2
+    environment:
+      - KAFKA_BROKER_ID=2
+    ports:
+      - 11092:9092
+      - 11093:9093
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+    networks:
+    - byfn
+
+  kafka3:
+    extends:
+      file: base/docker-compose-base.yaml
+      service: kafka
+    container_name: kafka3
+    environment:
+      - KAFKA_BROKER_ID=3
+    ports:
+      - 12092:9092
+      - 12093:9093
+    depends_on:
+      - zookeeper0
+      - zookeeper1
+      - zookeeper2
+    networks:
+    - byfn
