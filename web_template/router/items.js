@@ -44,15 +44,16 @@ router.post('/:id', (req, res) => {
     });
 });
 
+
 // create
-router.post('/', multer({ dest: './upload/'}), function(req, res, next){
+router.post('/', function(req, res, next){
     var item = new Item();
     item.DataPath = req.body.name;
     item.DataNum = req.body.name;
     item.user = req.user.email;
-    var title = req.body.name; // inputText의 name Value의 값을 가져옵니다.     
-    var fileObj = req.files.myFile; // multer 모듈 덕분에​ req.files가 사용 가능합니다.  ​
-    var orgFileName = fileObj.originalname; // 원본 파일명을 저장한다.(originalname은 fileObj의 속성)​​
+    //var title = req.body.name; // inputText의 name Value의 값을 가져옵니다.
+    //var fileObj = req.files.myFile; // multer 모듈 덕분에​ req.files가 사용 가능합니다.  ​
+    //var orgFileName = fileObj.originalname; // 원본 파일명을 저장한다.(originalname은 fileObj의 속성)​​
     item.save(function (err, item){
         if(err) return console.error(err);
         console.log("등록 성공");
@@ -60,6 +61,7 @@ router.post('/', multer({ dest: './upload/'}), function(req, res, next){
     console.log(req.file);
     res.redirect("/items")
 })
+
 
 // delete
 router.get('/delete/:id', (req, res) => {
